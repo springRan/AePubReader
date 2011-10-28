@@ -59,15 +59,15 @@ return(theElements);
 {
 	if (URI == nil || [URI length] == 0)
 		return [self elementsForName:localName];
-	
+
 	NSMutableArray *theElements = [NSMutableArray array];
 	const xmlChar *theLocalName = (const xmlChar *)[localName UTF8String];
 	const xmlChar *theNamespaceName = (const xmlChar *)[URI UTF8String];
-	
+
 	xmlNodePtr theCurrentNode = _node->children;
 	while (theCurrentNode != NULL)
 	{
-		if (theCurrentNode->type == XML_ELEMENT_NODE 
+		if (theCurrentNode->type == XML_ELEMENT_NODE
 			&& xmlStrcmp(theLocalName, theCurrentNode->name) == 0
 			&& theCurrentNode->ns
 			&& xmlStrcmp(theNamespaceName, theCurrentNode->ns->href) == 0)
@@ -76,8 +76,8 @@ return(theElements);
 			[theElements addObject:theNode];
 		}
 		theCurrentNode = theCurrentNode->next;
-	}	
-	
+	}
+
 	return theElements;
 }
 
@@ -97,29 +97,29 @@ return(theAttributes);
 - (CXMLNode *)attributeForName:(NSString *)name
 {
 	// TODO -- look for native libxml2 function for finding a named attribute (like xmlGetProp)
-	
+
 	NSRange split = [name rangeOfString:@":"];
-	
+
 	xmlChar *theLocalName = NULL;
 	xmlChar *thePrefix = NULL;
-	
+
 	if (split.length > 0)
 	{
 		theLocalName = (xmlChar *)[[name substringFromIndex:split.location + 1] UTF8String];
 		thePrefix = (xmlChar *)[[name substringToIndex:split.location] UTF8String];
-	} 
-	else 
+	}
+	else
 	{
 		theLocalName = (xmlChar *)[name UTF8String];
 	}
-	
+
 	xmlAttrPtr theCurrentNode = _node->properties;
 	while (theCurrentNode != NULL)
 	{
 		if (xmlStrcmp(theLocalName, theCurrentNode->name) == 0)
 		{
-			if (thePrefix == NULL || (theCurrentNode->ns 
-									  && theCurrentNode->ns->prefix 
+			if (thePrefix == NULL || (theCurrentNode->ns
+									  && theCurrentNode->ns->prefix
 									  && xmlStrcmp(thePrefix, theCurrentNode->ns->prefix) == 0))
 			{
 				CXMLNode *theAttribute = [CXMLNode nodeWithLibXMLNode:(xmlNodePtr)theCurrentNode freeOnDealloc:NO];
@@ -135,11 +135,11 @@ return(theAttributes);
 {
 	if (URI == nil)
 		return [self attributeForName:localName];
-	
+
 	// TODO -- look for native libxml2 function for finding a named attribute (like xmlGetProp)
 	const xmlChar *theLocalName = (const xmlChar *)[localName UTF8String];
 	const xmlChar *theNamespaceName = (const xmlChar *)[URI UTF8String];
-	
+
 	xmlAttrPtr theCurrentNode = _node->properties;
 	while (theCurrentNode != NULL)
 	{
@@ -159,18 +159,18 @@ return(theAttributes);
 {
 	NSMutableArray *theNamespaces = [[[NSMutableArray alloc] init] autorelease];
 	xmlNsPtr theCurrentNamespace = _node->nsDef;
-	
+
 	while (theCurrentNamespace != NULL)
 	{
 		NSString *thePrefix = theCurrentNamespace->prefix ? [NSString stringWithUTF8String:(const char *)theCurrentNamespace->prefix] : @"";
 		NSString *theURI = [NSString stringWithUTF8String:(const char *)theCurrentNamespace->href];
 		CXMLNamespaceNode *theNode = [[CXMLNamespaceNode alloc] initWithPrefix:thePrefix URI:theURI parentElement:self];
 		[theNamespaces addObject:theNode];
-		[theNode release];		
-		
+		[theNode release];
+
 		theCurrentNamespace = theCurrentNamespace->next;
 	}
-	
+
 	return theNamespaces;
 }
 
@@ -178,7 +178,7 @@ return(theAttributes);
 {
 	const xmlChar *thePrefix = (const xmlChar *)[name UTF8String];
 	xmlNsPtr theCurrentNamespace = _node->nsDef;
-	
+
 	while (theCurrentNamespace != NULL)
 	{
 		if (xmlStrcmp(theCurrentNamespace->prefix, thePrefix) == 0)
@@ -186,7 +186,7 @@ return(theAttributes);
 			NSString *thePrefix = theCurrentNamespace->prefix ? [NSString stringWithUTF8String:(const char *)theCurrentNamespace->prefix] : @"";
 			NSString *theURI = [NSString stringWithUTF8String:(const char *)theCurrentNamespace->href];
 			return [[[CXMLNamespaceNode alloc] initWithPrefix:thePrefix URI:theURI parentElement:self] autorelease];
-		}			
+		}
 		theCurrentNamespace = theCurrentNamespace->next;
 	}
 	return nil;
@@ -195,42 +195,42 @@ return(theAttributes);
 - (CXMLNode *)resolveNamespaceForName:(NSString *)name
 {
 	NSRange split = [name rangeOfString:@":"];
-	
+
 	if (split.length > 0)
 		return [self namespaceForPrefix:[name substringToIndex:split.location]];
-	
+
 	xmlNsPtr theCurrentNamespace = _node->nsDef;
-	
+
 	while (theCurrentNamespace != NULL)
 	{
-		if (theCurrentNamespace->prefix == 0 
+		if (theCurrentNamespace->prefix == 0
 			|| (theCurrentNamespace->prefix)[0] == 0)
 		{
 			NSString *thePrefix = theCurrentNamespace->prefix ? [NSString stringWithUTF8String:(const char *)theCurrentNamespace->prefix] : @"";
 			NSString *theURI = [NSString stringWithUTF8String:(const char *)theCurrentNamespace->href];
 			return [[[CXMLNamespaceNode alloc] initWithPrefix:thePrefix URI:theURI parentElement:self] autorelease];
-		}			
+		}
 		theCurrentNamespace = theCurrentNamespace->next;
 	}
-	
+
 	return nil;
 }
 
 - (NSString *)resolvePrefixForNamespaceURI:(NSString *)namespaceURI
 {
 	const xmlChar *theXMLURI = (const xmlChar *)[namespaceURI UTF8String];
-	
+
 	xmlNsPtr theCurrentNamespace = _node->nsDef;
-	
+
 	while (theCurrentNamespace != NULL)
 	{
 		if (xmlStrcmp(theCurrentNamespace->href, theXMLURI) == 0)
 		{
-			if(theCurrentNamespace->prefix) 
+			if(theCurrentNamespace->prefix)
 				return [NSString stringWithUTF8String:(const char *)theCurrentNamespace->prefix];
-			
+
 			return @"";
-		}			
+		}
 		theCurrentNamespace = theCurrentNamespace->next;
 	}
 	return nil;
@@ -266,7 +266,7 @@ return(theAttributes);
 //	}
 //
 //[str appendString:@">"];
-//	
+//
 //if ( _node->children )
 //	{
 //	for (id child in [self children])
@@ -279,7 +279,7 @@ return(theAttributes);
 - (NSString *)description
 {
 	NSAssert(_node != NULL, @"TODO");
-	
+
 	return([NSString stringWithFormat:@"<%@ %p [%p] %@ %@>", NSStringFromClass([self class]), self, self->_node, [self name], [self XMLStringWithOptions:0]]);
 }
 

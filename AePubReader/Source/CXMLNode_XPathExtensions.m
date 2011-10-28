@@ -66,10 +66,10 @@ else
 		xmlNodePtr theNode = theXPathObject->nodesetval->nodeTab[N];
 		[theArray addObject:[CXMLNode nodeWithLibXMLNode:theNode freeOnDealloc:NO]];
 		}
-		
+
 	theResult = theArray;
 	}
-	
+
 xmlXPathFreeObject(theXPathObject);
 
 xmlXPathFreeContext(theXPathContext);

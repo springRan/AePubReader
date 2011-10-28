@@ -12,7 +12,7 @@
 
 //TODO: parse author, title
 //		save epubBasePath
-		
+
 
 @interface EPub : NSObject {
 	NSString* title;

@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -52,7 +52,7 @@ CFIndex lenThruOr(CFStringInlineBuffer* buffer, CFIndex index, const char a, con
 unichar skipNonWhitespace(CFStringInlineBuffer* buffer, CFIndex* index){
 	unichar c;
 	for (;(c = CFStringGetCharacterFromInlineBuffer(buffer, *index)); (*index)++){
-		if (c <= 32) 
+		if (c <= 32)
 			return c;
 	}
 	return 0;
@@ -62,14 +62,14 @@ unichar skipNonWhitespace(CFStringInlineBuffer* buffer, CFIndex* index){
 unichar skipWhitespace(CFStringInlineBuffer* buffer, CFIndex* index){
 	unichar c;
 	for (;(c = CFStringGetCharacterFromInlineBuffer(buffer, *index)); (*index)++){
-		if (c > 32) 
+		if (c > 32)
 			return c;
 	}
 	return 0;
 }
 
 
-// allowed to start with / or close elements 
+// allowed to start with / or close elements
 CFIndex lenToken(CFStringInlineBuffer* buffer, CFIndex index){
 	CFIndex maxIndex  = buffer->rangeToBuffer.location + buffer->rangeToBuffer.length;
 	CFIndex i;
@@ -91,7 +91,7 @@ CFIndex startsWithStr(CFStringInlineBuffer* buffer, CFIndex index, const char* p
 		unichar c = CFStringGetCharacterFromInlineBuffer(buffer, index);
 		if (c != *prefix)
 			return 0;
-		else 
+		else
 			prefix++;
 		index++;
 	}
@@ -104,7 +104,7 @@ CFIndex lenEntityName(CFStringInlineBuffer* buffer, CFIndex index){
 	index++; // first char is assumed to be a '&'
 	unichar c;
 	while (c = CFStringGetCharacterFromInlineBuffer(buffer, index++)){
-		if (c==';') 
+		if (c==';')
 			return len + 1;
 		if (((c < 'a') || (c > 'z')) && ((c < 'A') || (c > 'Z')) && ((c < '0') || (c > '9')) && (c != '#'))
 			return NSNotFound;
@@ -181,7 +181,7 @@ unichar parseEntity(CFStringInlineBuffer* buffer, CFIndex index, CFIndex* len){
 		return '&';
 	}
 	else{
-		(*len) = lenThru(buffer, index + 1, ";") + 1; 
+		(*len) = lenThru(buffer, index + 1, ";") + 1;
 		if (((*len) < 2) || ((*len) > 12)) return 0;
 		unichar c = CFStringGetCharacterFromInlineBuffer(buffer, index + 1);
 		if (c == '#'){
@@ -197,7 +197,7 @@ unichar parseEntity(CFStringInlineBuffer* buffer, CFIndex index, CFIndex* len){
 				return CFStringGetIntValue((CFStringRef)decString);
 			}
 		}
-		else{ 
+		else{
 			//named enityt
 			if (ENTITIES_MAP == nil)
 				ENTITIES_MAP = [[NSDictionary alloc] initWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"HTML Entities" ofType: @"plist"]];
@@ -211,7 +211,7 @@ unichar parseEntity(CFStringInlineBuffer* buffer, CFIndex index, CFIndex* len){
 }
 
 
-/* 
+/*
  assumes starting at the '<' of '<!DOCTYPE'
  known limitations
  1. will get confused if any of the internal decls (or comments, etc) have an embedded '>'
@@ -231,19 +231,19 @@ CFIndex lenDoctype(CFStringInlineBuffer* buffer, CFIndex index){
 			len = lenThru(buffer, index, ">");
 		else if (c == '%')//PEReference
 			len = lenThru(buffer, index, ";");
-		if (len < 0) return 0; //end of decl not found, fail				
+		if (len < 0) return 0; //end of decl not found, fail
 		index += len;
 	}
-	
+
 	if (!c) return 0; // ran out of buffer
-	
+
 	// found end of internal subset, just need the closing '>'
-	
+
 	index++;
-	
+
 	c = skipWhitespace(buffer, &index);
 	if (c != '>') return 0; // ran out of buffer
-	
+
 	return index - startIndex + 1;
 }
 
@@ -306,11 +306,11 @@ NSString* createStringFromBuffer(CFStringInlineBuffer* buffer, CFIndex index, CF
 
 	CFStringInlineBuffer localBuffer;
 	CFStringInitInlineBuffer((CFStringRef)self, &localBuffer, CFRangeMake(range.location, range.length));
-	
+
 	CFIndex index = 1; // skip the leading '<'
-	
+
 	unichar c = skipNonWhitespace(&localBuffer, &index);
-	
+
 	while (c){
 		NSString* attrName;
 		NSString* attrValue;
@@ -361,7 +361,7 @@ static inline int moveBufferToIndex(CFStringInlineBuffer *buffer, CFIndex index)
 	CFIndex lengthLeftInString = CFStringGetLength(buffer->theString) - index;
 	if (!lengthLeftInString) {
 //		NSLog(@"done with string");
-		return false;		
+		return false;
 	}
 	int bufferLength = MIN(lengthLeftInString, MAX_READ_BUFFER_LENGTH);
 	CFRange range = CFRangeMake(index, bufferLength);
@@ -383,7 +383,7 @@ static inline int moveBufferToIndex(CFStringInlineBuffer *buffer, CFIndex index)
 	CFStringInlineBuffer buffer;
 	buffer.theString = (CFStringRef)source;
 	buffer.rangeToBuffer.location = buffer.rangeToBuffer.length = 0;
-	
+
 	TagChunk* tag = [[TagChunk alloc] initWithString: source range: NSMakeRange(0,0) tagName: nil];
 	CommentChunk* comment = [[CommentChunk alloc] initWithString: source range: NSMakeRange(0,0)];
 	EntityChunk* entity = [[EntityChunk alloc] initWithString: source range: NSMakeRange(0,0)];
@@ -394,12 +394,12 @@ static inline int moveBufferToIndex(CFStringInlineBuffer *buffer, CFIndex index)
 
 	BOOL delegateWantsToContinue = YES;
 	unichar c;
-	
+
 	while (delegateWantsToContinue && moveBufferToIndex(&buffer, buffer.rangeToBuffer.location + index)){
 		index = 0;
 
 		while (delegateWantsToContinue && (c = CFStringGetCharacterFromInlineBuffer(&buffer, index))){
-						
+
 			int tagLen;
 			int len = 0;
 			int interior;
@@ -415,46 +415,46 @@ static inline int moveBufferToIndex(CFStringInlineBuffer *buffer, CFIndex index)
 						chunk = tag;
 						len = interior + 2;
 					}
-					else 
+					else
 						partialChunk = tag;
 				}
 				else if (startsWithStr(&buffer, index + 1, "!--")){
 					interior = lenThru(&buffer, index + 4, "-->")-3;
 					if (interior > 0){
-						chunk = comment;				
+						chunk = comment;
 						len = interior + 7;
 					}
-					else 
+					else
 						partialChunk = comment;
 				}
 				else if (startsWithStr(&buffer, index + 1, "![CDATA[")){
 					interior = lenThru(&buffer, index + 9, "]]>")-3;
 					if (interior > 0){
-						chunk = cdata;				
+						chunk = cdata;
 						len = interior + 12;
 					}
-					else 
+					else
 						partialChunk = cdata;
 				}
 				else if (startsWithStr(&buffer, index + 1, "?")){
 					interior = lenThru(&buffer, index + 2, ">")-1;
 					if (interior > 0){
-						chunk = pi;				
+						chunk = pi;
 						len = interior + 3;
 					}
-					else 
+					else
 						partialChunk = pi;
 				}
 				else if (startsWithStr(&buffer, index + 1, "!DOCTYPE")){
 					interior = lenDoctype(&buffer, index + 9) - 1;
 					if (interior > 0){
-						chunk = doctype;				
+						chunk = doctype;
 						len = interior + 10;
 					}
-					else 
+					else
 						partialChunk = doctype;
 				}
-				else 
+				else
 					partialChunk = tag;
 			}
 			else if (c == '&'){
@@ -465,7 +465,7 @@ static inline int moveBufferToIndex(CFStringInlineBuffer *buffer, CFIndex index)
 					chunk = text;
 				}
 				else if (entityLen > 0){
-					chunk = entity;				
+					chunk = entity;
 					len = entityLen;
 				}
 				else
@@ -475,12 +475,12 @@ static inline int moveBufferToIndex(CFStringInlineBuffer *buffer, CFIndex index)
 				len = lenThruOr(&buffer, index + 1, '<', '&') + 1;
 				chunk = text;
 			}
-			
+
 			if (partialChunk){ // recover from a partial chunk
 				BOOL bytesLeftBeyondBuffer = maxSourceIndex > (buffer.rangeToBuffer.location + buffer.rangeToBuffer.length);
-				if (bytesLeftBeyondBuffer || partial) 
-					break; // go get more bytes in the buffer / or exit 
-				
+				if (bytesLeftBeyondBuffer || partial)
+					break; // go get more bytes in the buffer / or exit
+
 				// recover by emiting as text
 				len = lenThruOr(&buffer, index + 1, '<', '&') + 1;
 				chunk = text;
@@ -488,18 +488,18 @@ static inline int moveBufferToIndex(CFStringInlineBuffer *buffer, CFIndex index)
 				NSString* fragment = [source substringWithRange: NSMakeRange(buffer.rangeToBuffer.location + index, MIN(8, [source length] - buffer.rangeToBuffer.location + index))];
 				[parser info: [NSString stringWithFormat: @"Unable to parse '%@' as %@", fragment, [[partialChunk class] humanName]] atIndex: buffer.rangeToBuffer.location + index];
 			}
-			
+
 			// hand the chunk to the delgate
 			chunk.range = NSMakeRange(index + buffer.rangeToBuffer.location, len);
 //			NSLog(@"%@: %@", [[chunk class] humanName], [source substringWithRange: chunk.range]);
-			chunk.buffer = &buffer;		
+			chunk.buffer = &buffer;
 			delegateWantsToContinue = [delegate performSelector: selector withObject: chunk withObject: context] != nil;
 			index += len;
 
 			assert(index > 0);
 		}
 	}
-	
+
 	if (!delegateWantsToContinue)
 		[parser info: @"delegate stopped the parsing" atIndex: buffer.rangeToBuffer.location + index];
 
@@ -518,9 +518,9 @@ static inline int moveBufferToIndex(CFStringInlineBuffer *buffer, CFIndex index)
 
 +(void)parseHTML:(NSString*) source delegate:(id)delegate selector:(SEL)selector context: (void*) context{
 	int index = 0;
-	[self parseHTML: source delegate: delegate selector: selector context: context index: &index partial: NO];		
+	[self parseHTML: source delegate: delegate selector: selector context: context index: &index partial: NO];
 	NSAssert2(index == [source length], @"%i != %i", index, [source length]);
-} 
+}
 
 typedef struct{
 	NSMutableString* result;
@@ -543,7 +543,7 @@ typedef struct{
 	context.inScriptElement = NO;
 	context.inWhite = YES;
 	context.inPara = YES;
-	
+
 	[NSString parseHTML: self delegate: self selector:@selector(chunk:context:) context: &context];
 
 	if (context.writeIndex > 0)
@@ -567,7 +567,7 @@ typedef struct{
 		}
 	}
 	assert(context->writeIndex + chunk.range.length <= context->outBufferLength);
-		
+
 	CFRange bufferRangeToAppend = CFRangeMake(0, 0);
 	CFStringInlineBuffer* buffer = chunk.buffer;
 
@@ -598,7 +598,7 @@ typedef struct{
 	}
 	else if ([chunk isKind: ChunkKindEntity]){
 		CFRange rangeInBuffer = [chunk rangeInBuffer];
-		unichar entity = parseEntity(chunk.buffer, rangeInBuffer.location, &rangeInBuffer.length);		
+		unichar entity = parseEntity(chunk.buffer, rangeInBuffer.location, &rangeInBuffer.length);
 		if (entity){
 			context->outBuffer[context->writeIndex++] = entity;
 			context->inWhite = NO;

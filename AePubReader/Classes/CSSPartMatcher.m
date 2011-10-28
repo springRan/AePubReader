@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -59,7 +59,7 @@
 -(void)addNextMatch:(Element*)nextElement withIndex:(int)index{
 	CSSPartMatcher* nextMatch = [[CSSPartMatcher alloc] initWithElement: nextElement selectorMatcher: selectorMatcher];
 	nextMatch.matchedPartIndex = index;
-	if (!matchersForNextPart) 
+	if (!matchersForNextPart)
 		matchersForNextPart = [[NSMutableArray alloc] initWithCapacity: 4];
 	[matchersForNextPart addObject: nextMatch];
 	[nextMatch release];
@@ -75,13 +75,13 @@
 		else if (nextVerb == CSSVerbDescendant)
 			verbMatches = [nextElement hasAncestor: self.matchedElement];//wasteful to not prune matches as they go out of scope
 		else if (nextVerb == CSSVerbChild)
-			verbMatches = nextElement.parent == self.matchedElement; 
+			verbMatches = nextElement.parent == self.matchedElement;
 		else if (nextVerb == CSSVerbSuccessor)
-			verbMatches = nextElement == self.matchedElement.nextSybling; 
+			verbMatches = nextElement == self.matchedElement.nextSybling;
 	}
-	
+
 	BOOL completeMatch = verbMatches && (index == [[selectorMatcher selector] countOfParts] - 1);
-	
+
 	if (matchersForNextPart){
 		for (CSSPartMatcher* match in matchersForNextPart){
 			completeMatch = completeMatch || [match matchNextElement: nextElement forIndex: index + 1];

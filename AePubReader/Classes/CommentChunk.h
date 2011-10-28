@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -27,7 +27,7 @@
 
 
 /**
-	CommentChunk corresponds to a comment section. 
+	CommentChunk corresponds to a comment section.
  */
 @interface CommentChunk : Chunk {
 

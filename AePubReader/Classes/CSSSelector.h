@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -34,23 +34,23 @@
 #define CSSVerbAny @""
 #define CSSVerb NSString*
 
-/** 
+/**
  *	CSSSelector is responsible for modeling a chain of CSSSelectorParts. For example
- *	
+ *
  *		body a.link
- *	
+ *
  *	is a chain of two parts "body" and "a.link"
- * 
+ *
  *  Parts are joined by "verbs" which correspond to symbols " ", "+", and ">"
  *	These parts define the relative position of the second part to the first
  *	Supported parts are:
- *		space		within - the second part must match an Element within the 
+ *		space		within - the second part must match an Element within the
  *					Element matching the first part
  *
- *		>			child - the second part must match an Element whose parent is  
+ *		>			child - the second part must match an Element whose parent is
  *					the Element matching the first part
  *
- *		+			successor - the second part must match an Element whose previous   
+ *		+			successor - the second part must match an Element whose previous
  *					sybling was the Element matching the first part
  */
 
@@ -64,5 +64,5 @@
 -(CSSSelectorPart*)partAtIndex:(int)index;
 -(CSSVerb)verbAtIndex:(int)index;
 -(CSSVerb)verbAfterIndex:(int)index;
-	
+
 @end

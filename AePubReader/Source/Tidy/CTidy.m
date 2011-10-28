@@ -100,7 +100,7 @@ if (theResultCode < 0)
 	return(NO);
 	}
 
-// Clean up input buffer.	
+// Clean up input buffer.
 tidyBufFree(&theInputBuffer);
 
 // Repair the data
@@ -112,7 +112,7 @@ if (theResultCode < 0)
 
 //theResultCode = tidyRunDiagnostics(theTidyDocument);
 
-// 
+//
 TidyBuffer theOutputBuffer;
 tidyBufInit(&theOutputBuffer);
 theResultCode = tidySaveBuffer(theTidyDocument, &theOutputBuffer);
@@ -122,7 +122,7 @@ NSAssert(theOutputBuffer.bp != NULL, @"The buffer should not be null.");
 NSData *theOutput = [NSData dataWithBytes:theOutputBuffer.bp length:theOutputBuffer.size];
 tidyBufFree(&theOutputBuffer);
 
-// 
+//
 if (outDiagnostics && theErrorBuffer.bp != NULL)
 	{
 	NSData *theErrorData = [NSData dataWithBytes:theErrorBuffer.bp length:theErrorBuffer.size];
@@ -197,7 +197,7 @@ if (theResultCode < 0)
 
 //theResultCode = tidyRunDiagnostics(theTidyDocument);
 
-// 
+//
 uint theBufferLength = 0;
 
 theResultCode = tidySaveString(theTidyDocument, NULL, &theBufferLength);
@@ -208,7 +208,7 @@ theResultCode = tidySaveString(theTidyDocument, [theOutputBuffer mutableBytes], 
 
 NSString *theString = [[[NSString alloc] initWithData:theOutputBuffer encoding:NSUTF8StringEncoding] autorelease];
 
-// 
+//
 if (outDiagnostics && theErrorBuffer.bp != NULL)
 	{
 	NSData *theErrorData = [NSData dataWithBytes:theErrorBuffer.bp length:theErrorBuffer.size];

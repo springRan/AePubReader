@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -56,7 +56,7 @@ unichar skipWhitespace(CFStringInlineBuffer* buffer, CFIndex* index);
  *	Returns length of the token. Used for attributes, class names, identifiers and tag names.
  *	Does not accommodate non latin characters.
  *	Accepts '-', '_', ':' even when in first character position
- *	Also permits '/' to begin the token (simplifies parsing close tags). 
+ *	Also permits '/' to begin the token (simplifies parsing close tags).
  */
 CFIndex lenToken(CFStringInlineBuffer* buffer, CFIndex index);
 
@@ -103,17 +103,17 @@ CFIndex lenDoctype(CFStringInlineBuffer* buffer, CFIndex index);
  *	Convenience method that creates an string from a range in the buffer
  */
 NSString* createStringFromBuffer(CFStringInlineBuffer* buffer, CFIndex index, CFIndex length);
-											
+
 @interface NSString (HTML)
 
 /**
- *	converts the string assuming it is a hex number 
+ *	converts the string assuming it is a hex number
  */
 -(int)hexValue;
 
 
 /**
- *	Returns a string in which 
+ *	Returns a string in which
  *		a) all the tags have been removed
  *		b) entities are resolved
  *		c) cdata sections are processed
@@ -154,7 +154,7 @@ NSString* createStringFromBuffer(CFStringInlineBuffer* buffer, CFIndex index, CF
 
 
 /**
- *	Parses an element returning its attributes. 
+ *	Parses an element returning its attributes.
  */
 -(NSDictionary*)parseElementAttributesWithRange:(NSRange) range caseSensative:(BOOL)caseSensative;
 
@@ -179,5 +179,5 @@ NSString* createStringFromBuffer(CFStringInlineBuffer* buffer, CFIndex index, CF
  *	repeatedly as more text arrives and is appended to the string.
  */
 +(void)parseHTML:(NSString*)source delegate:(id)delegate selector:(SEL)selector context: (void*) context index:(int*)sourceIndex partial:(BOOL)partial;
-	
+
 @end
