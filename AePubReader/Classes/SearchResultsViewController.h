@@ -13,7 +13,7 @@
     UITableView* resultsTableView;
     NSMutableArray* results;
     DetailViewController* epubViewController;
-    
+
     int currentChapterIndex;
     NSString* currentQuery;
 }

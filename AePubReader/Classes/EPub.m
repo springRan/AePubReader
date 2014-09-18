@@ -28,23 +28,23 @@
 
 	NSString* opfPath = [self parseManifestFile];
 	[self parseOPF:opfPath];
-	
-	
+
+
 }
 
 - (void)unzipAndSaveFileNamed:(NSString*)fileName{
-	
+
 	ZipArchive* za = [[ZipArchive alloc] init];
 	NSLog(@"%@", fileName);
 	NSLog(@"unzipping %@", epubFilePath);
 	if( [za UnzipOpenFile:epubFilePath]){
-		
+
 		NSString *strPath=[NSString stringWithFormat:@"%@/UnzippedEpub",[self applicationDocumentsDirectory]];
 		NSLog(@"%@", strPath);
 		//Delete all the previous files
 		NSFileManager *filemanager=[[NSFileManager alloc] init];
 		if ([filemanager fileExistsAtPath:strPath]) {
-			
+
 			NSError *error;
 			[filemanager removeItemAtPath:strPath error:&error];
 		}
@@ -64,12 +64,12 @@
 			alert=nil;
 		}
 		[za UnzipCloseFile];
-	}					
+	}
 	[za release];
 }
 
 - (NSString *)applicationDocumentsDirectory {
-	
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
     return basePath;
@@ -95,9 +95,9 @@
 	CXMLDocument* opfFile = [[[CXMLDocument alloc] initWithContentsOfURL:[NSURL fileURLWithPath:opfPath] options:0 error:nil] autorelease];
 	NSArray* itemsArray = [opfFile nodesForXPath:@"//opf:item" namespaceMappings:[NSDictionary dictionaryWithObject:@"http://www.idpf.org/2007/opf" forKey:@"opf"] error:nil];
 //	NSLog(@"itemsArray size: %d", [itemsArray count]);
-    
+
     NSString* ncxFileName;
-	
+
     NSMutableDictionary* itemDictionary = [[NSMutableDictionary alloc] init];
 	for (CXMLElement* element in itemsArray) {
 		[itemDictionary setValue:[[element attributeForName:@"href"] stringValue] forKey:[[element attributeForName:@"id"] stringValue]];
@@ -106,7 +106,7 @@
             NSLog(@"%@ : %@", [[element attributeForName:@"id"] stringValue], [[element attributeForName:@"href"] stringValue]);
         }
 	}
-	
+
     int lastSlash = [opfPath rangeOfString:@"/" options:NSBackwardsSearch].location;
 	NSString* ebookBasePath = [opfPath substringToIndex:(lastSlash +1)];
     CXMLDocument* ncxToc = [[[CXMLDocument alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", ebookBasePath, ncxFileName]] options:0 error:nil] autorelease];
@@ -121,7 +121,7 @@
         }
     }
 
-	
+
 	NSArray* itemRefsArray = [opfFile nodesForXPath:@"//opf:itemref" namespaceMappings:[NSDictionary dictionaryWithObject:@"http://www.idpf.org/2007/opf" forKey:@"opf"] error:nil];
 	NSLog(@"itemRefsArray size: %d", [itemRefsArray count]);
 	NSMutableArray* tmpArray = [[NSMutableArray alloc] init];
@@ -130,11 +130,11 @@
         NSString* chapHref = [itemDictionary valueForKey:[[element attributeForName:@"idref"] stringValue]];
 
         Chapter* tmpChapter = [[[Chapter alloc] initWithPath:[NSString stringWithFormat:@"%@%@", ebookBasePath, chapHref]
-                                                       title:[titleDictionary valueForKey:chapHref] 
+                                                       title:[titleDictionary valueForKey:chapHref]
                                                 chapterIndex:count++] retain];
 		[tmpArray addObject:tmpChapter];
 	}
-	spineArray = [[NSArray arrayWithArray:tmpArray] retain]; 
+	spineArray = [[NSArray arrayWithArray:tmpArray] retain];
 
 }
 

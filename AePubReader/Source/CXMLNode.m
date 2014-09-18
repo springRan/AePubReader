@@ -85,32 +85,32 @@ return(_node->type); // TODO this isn't 100% accurate!
 	// TODO use xmlCheckUTF8 to check name
 	if (_node->name == NULL)
 		return(NULL);
-	
+
 	NSString *localName = [NSString stringWithUTF8String:(const char *)_node->name];
-	
+
 	if (_node->ns == NULL || _node->ns->prefix == NULL)
 		return localName;
-	
+
 	return [NSString stringWithFormat:@"%@:%@",	[NSString stringWithUTF8String:(const char *)_node->ns->prefix], localName];
 }
 
 - (NSString *)stringValue
 {
 	NSAssert(_node != NULL, @"CXMLNode does not have attached libxml2 _node.");
-	
-	if (_node->type == XML_TEXT_NODE || _node->type == XML_CDATA_SECTION_NODE) 
+
+	if (_node->type == XML_TEXT_NODE || _node->type == XML_CDATA_SECTION_NODE)
 		return [NSString stringWithUTF8String:(const char *)_node->content];
-	
+
 	if (_node->type == XML_ATTRIBUTE_NODE)
 		return [NSString stringWithUTF8String:(const char *)_node->children->content];
 
 	NSMutableString *theStringValue = [[[NSMutableString alloc] init] autorelease];
-	
+
 	for (CXMLNode *child in [self children])
 	{
 		[theStringValue appendString:[child stringValue]];
 	}
-	
+
 	return theStringValue;
 }
 
@@ -156,10 +156,10 @@ else
 - (NSUInteger)childCount
 {
 	NSAssert(_node != NULL, @"CXMLNode does not have attached libxml2 _node.");
-	
+
 	if (_node->type == CXMLAttributeKind)
 		return 0; // NSXMLNodes of type NSXMLAttributeKind can't have children
-		
+
 	xmlNodePtr theCurrentNode = _node->children;
 	NSUInteger N;
 	for (N = 0; theCurrentNode != NULL; ++N, theCurrentNode = theCurrentNode->next)
@@ -170,9 +170,9 @@ else
 - (NSArray *)children
 {
 	NSAssert(_node != NULL, @"CXMLNode does not have attached libxml2 _node.");
-	
+
 	NSMutableArray *theChildren = [NSMutableArray array];
-	
+
 	if (_node->type != CXMLAttributeKind) // NSXML Attribs don't have children.
 	{
 		xmlNodePtr theCurrentNode = _node->children;
@@ -183,7 +183,7 @@ else
 			theCurrentNode = theCurrentNode->next;
 		}
 	}
-	return(theChildren);      
+	return(theChildren);
 }
 
 - (CXMLNode *)childAtIndex:(NSUInteger)index
@@ -252,20 +252,20 @@ else
 + (NSString *)localNameForName:(NSString *)name
 {
 	NSRange split = [name rangeOfString:@":"];
-	
+
 	if (split.length > 0)
 		return [name substringFromIndex:split.location + 1];
-	
+
 	return name;
 }
 
 + (NSString *)prefixForName:(NSString *)name
 {
 	NSRange split = [name rangeOfString:@":"];
-	
+
 	if (split.length > 0)
 		return [name substringToIndex:split.location];
-	
+
 	return @"";
 }
 
@@ -273,16 +273,16 @@ else
 {
 	if ([name isEqualToString:@"xml"])
 		return [CXMLNode namespaceWithName:@"xml" stringValue:@"http://www.w3.org/XML/1998/namespace"];
-	
+
 	if ([name isEqualToString:@"xs"])
 		return [CXMLNode namespaceWithName:@"xs" stringValue:@"http://www.w3.org/2001/XMLSchema"];
-	
+
 	if ([name isEqualToString:@"xsi"])
 		return [CXMLNode namespaceWithName:@"xsi" stringValue:@"http://www.w3.org/2001/XMLSchema-instance"];
-	
+
 	if ([name isEqualToString:@"xmlns"]) // Not in Cocoa, but should be as it's reserved by W3C
 		return [CXMLNode namespaceWithName:@"xmlns" stringValue:@"http://www.w3.org/2000/xmlns/"];
-	
+
 	return nil;
 }
 
@@ -348,7 +348,7 @@ else
 		xmlNodePtr theNode = theXPathObject->nodesetval->nodeTab[N];
 		[theArray addObject:[CXMLNode nodeWithLibXMLNode:theNode freeOnDealloc:NO]];
 		}
-		
+
 	theResult = theArray;
 	}
 

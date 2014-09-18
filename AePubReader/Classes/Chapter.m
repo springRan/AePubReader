@@ -9,7 +9,7 @@
 #import "Chapter.h"
 #import "CSSSelector.h"
 
-@implementation Chapter 
+@implementation Chapter
 
 @synthesize delegate, chapterIndex, title, pageCount, spinePath, text, windowSize, fontPercentSize;
 
@@ -18,7 +18,7 @@
         spinePath = [theSpinePath retain];
         title = [theTitle retain];
         chapterIndex = theIndex;
-    
+
         DocumentRoot* doc = [Element parseHTML:[[NSString alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL fileURLWithPath:theSpinePath]] encoding:NSUTF8StringEncoding]];
         text = [[[doc elementWithCSSSelector:[[CSSSelector alloc] initWithString:@"body"]] contentsText] retain];
     }
@@ -45,7 +45,7 @@
 
 - (void) webViewDidFinishLoad:(UIWebView*)webView{
     NSString *varMySheet = @"var mySheet = document.styleSheets[0];";
-	
+
 	NSString *addCSSRule =  @"function addCSSRule(selector, newRule) {"
 	"if (mySheet.addRule) {"
         "mySheet.addRule(selector, newRule);"								// For Internet Explorer
@@ -54,32 +54,32 @@
         "mySheet.insertRule(selector + '{' + newRule + ';}', ruleIndex);"   // For Firefox, Chrome, etc.
     "}"
 	"}";
-	
+
 //	NSLog(@"w:%f h:%f", webView.bounds.size.width, webView.bounds.size.height);
-	
+
 	NSString *insertRule1 = [NSString stringWithFormat:@"addCSSRule('html', 'padding: 0px; height: %fpx; -webkit-column-gap: 0px; -webkit-column-width: %fpx;')", webView.frame.size.height, webView.frame.size.width];
 	NSString *insertRule2 = [NSString stringWithFormat:@"addCSSRule('p', 'text-align: justify;')"];
 	NSString *setTextSizeRule = [NSString stringWithFormat:@"addCSSRule('body', '-webkit-text-size-adjust: %d%%;')",fontPercentSize];
-    
-	
+
+
 	[webView stringByEvaluatingJavaScriptFromString:varMySheet];
-	
+
 	[webView stringByEvaluatingJavaScriptFromString:addCSSRule];
-		
+
 	[webView stringByEvaluatingJavaScriptFromString:insertRule1];
-	
+
 	[webView stringByEvaluatingJavaScriptFromString:insertRule2];
-	
+
     [webView stringByEvaluatingJavaScriptFromString:setTextSizeRule];
-    
+
 	int totalWidth = [[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollWidth"] intValue];
 	pageCount = (int)((float)totalWidth/webView.bounds.size.width);
-	
+
 //    NSLog(@"Chapter %d: %@ -> %d pages", chapterIndex, title, pageCount);
-    
+
     [webView dealloc];
     [delegate chapterDidFinishLoad:self];
-    
+
 }
 
 

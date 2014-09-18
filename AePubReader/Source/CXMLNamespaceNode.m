@@ -12,13 +12,13 @@
 
 - (id) initWithPrefix:(NSString *)prefix URI:(NSString *)uri parentElement:(CXMLElement *)parent
 {
-	if ((self = [super init]) != NULL) 
+	if ((self = [super init]) != NULL)
 	{
 		_prefix = [prefix copy];
 		_uri = [uri copy];
 		_parent = parent; // Don't retain parent
 	}
-	
+
 	return self;
 }
 
@@ -27,14 +27,14 @@
 	[_prefix release], _prefix = nil;
 	[_uri release], _uri = nil;
 	_parent = nil; // Parent not retained
-	
+
 	[super dealloc];
 }
 
 #pragma mark -
 #pragma mark Overidden methods
 
-// NB: We need to override every method that relies on _node as namespaces in libXML don't have a xmlNode 
+// NB: We need to override every method that relies on _node as namespaces in libXML don't have a xmlNode
 
 - (CXMLNodeKind)kind
 {

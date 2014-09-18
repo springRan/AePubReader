@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -35,7 +35,7 @@
 
 /**
 	Chunk is a range of source text that has been divided into a meaningful "chunk" by
-	the NSString_HTML parser. Examples of a chunk include an element, a cdata section, an entity, 
+	the NSString_HTML parser. Examples of a chunk include an element, a cdata section, an entity,
 	character data, etc. It is an abstract base class that handles basic housekeeping.
 	Subclasses include TagChunk, TxtChunk, CommentChunk, EntityChunk, etc.
  */
@@ -53,14 +53,14 @@
 +(NSString*)humanName;
 
 
-/**	
-	The string that contains the whole source being parsed. 
+/**
+	The string that contains the whole source being parsed.
  */
 @property (nonatomic, retain) NSString* source;
 
 
-/**	
-	The range within the source of this chunk. Includes delimiters like '<' and '>' 
+/**
+	The range within the source of this chunk. Includes delimiters like '<' and '>'
  */
 @property NSRange range;
 
@@ -69,7 +69,7 @@
 @property CFStringInlineBuffer* buffer;
 
 
-/**	
+/**
 	Only some of the whole string is buffered... when this chunk is delivered by the parser
 	the whole chunk will be available in the buffer
  */
@@ -77,21 +77,21 @@
 
 
 /**
-	The interior of a chunk ususally excludes the delimiters. This method does the index 
+	The interior of a chunk ususally excludes the delimiters. This method does the index
 	math to point inside the buffer. Currently only used to access the character
-	data within a cdata section. 
+	data within a cdata section.
  */
 @property (readonly) CFRange interiorRangeInBuffer;
 
 
-/** 
+/**
 	Creates a new chunk from the range aRange in aSource string
  */
 -(id)initWithString: (NSString*)aSource range:(NSRange)aRange;
 
 
 /**
-	The interior of a chunk ususally excludes the delimiters of the chunk. 
+	The interior of a chunk ususally excludes the delimiters of the chunk.
  */
 -(NSRange)interiorRange;
 

@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -50,24 +50,24 @@ typedef enum{
 	ElementParserMode mode;
 }
 
-/** 
+/**
  *	The delegate that is called when selectors match
  */
 @property (nonatomic, assign) id delegate;
 
-/** 
+/**
  *	HTML or XML
  */
 @property ElementParserMode mode;
 
 
-/** 
+/**
  *	The source being parsed.
  */
 @property (readonly) NSString* source;
 
 
-/** 
+/**
  *	Parse an HMTL document and return a tree of Elements corresponding to the document.
  *	The DocumentRoot is a special Element that contains all the top-level Elements in the
  *	source.
@@ -75,14 +75,14 @@ typedef enum{
 -(DocumentRoot*)parseHTML:(NSString*)source;
 
 
-/** 
+/**
  *	Parse an XML document and return a tree of Elements corresponding to the document.
  *	The DocumentRoot is a special Element that contains all the top-level Elements in the
  *	source.
  */
 -(DocumentRoot*)parseXML:(NSString*)source;
 
-/** 
+/**
  *	When parsing a document incrementally, begin with a single call to beginParsing,
  *	followed by multiple calls to continueParsing as text arrives and finaly a single
  *	call to finishParsing
@@ -91,23 +91,23 @@ typedef enum{
 -(void)continueParsingString:(NSString*)string;
 -(void)finishParsing;
 
-/** 
+/**
  *	Registers a callback to be performed whenever the supplied selector matches
  */
 -(void)performSelector:(SEL)method forElementsMatching:(NSString*)cssSelector;
 
-/** 
+/**
  *	returns true for html elements like <img>
  */
  -(BOOL)shouldBeEmptyElement:(Element*)element;
 
-/** 
+/**
  *	internal callback when a warning condition occurs. May be overidden to surface an
  *	NSError
  */
 -(void)warning:(int)code description:(NSString*)description chunk: (Chunk*)chunk;
 
-/** 
+/**
  *	internal callback when an info condition occurs. May be overidden for debugging purposes
  */
 -(void)info:(NSString*)info atIndex:(int)sourceIndex;

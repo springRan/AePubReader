@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -25,15 +25,15 @@
 #import <Foundation/Foundation.h>
 #import "Element.h"
 
-/** 
+/**
  *	CSSSelectorPart is responsible for modeling one part of CSSSelector. For example
- *	
+ *
  *		a.link[target]
- *	
+ *
  *	is a part which matches <a> tags which have a link class name and an attribute 'target'
- * 
+ *
  *  A part can consist of one or more of the following:
- *	
+ *
  *		*			All elements match (used when no tagname is supplied)
  *		tagname		Matching elements have this tag name
  *		#id			Matching elements have this as their id attribute

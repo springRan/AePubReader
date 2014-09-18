@@ -15,36 +15,36 @@
 @class SearchResult;
 
 @interface DetailViewController : UIViewController <UIWebViewDelegate, ChapterProtocol, UISearchBarDelegate> {
-    
+
     UIToolbar *toolbar;
-        
+
 	UIWebView *webView;
-    
+
     UIBarButtonItem* chapterListButton;
-	
+
 	UIBarButtonItem* prevSpineButton;
 	UIBarButtonItem* nextSpineButton;
-	
+
 	UIBarButtonItem* prevPageButton;
 	UIBarButtonItem* nextPageButton;
-	
+
 	UIBarButtonItem* decTextSizeButton;
 	UIBarButtonItem* incTextSizeButton;
-    
+
     UISlider* pageSlider;
     UILabel* currentPageLabel;
-	
+
 	EPub* loadedEpub;
 	int currentSpineIndex;
 	int currentPageInSpineIndex;
 	int pagesInCurrentSpineCount;
 	int currentTextSize;
 	int totalPagesCount;
-    
+
     BOOL epubLoaded;
     BOOL loading;
     BOOL searching;
-    
+
     UIPopoverController* chaptersPopover;
     UIPopoverController* searchResultsPopover;
 

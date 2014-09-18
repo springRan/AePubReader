@@ -12,9 +12,9 @@
 @class DetailViewController;
 
 @interface AePubReaderAppDelegate : NSObject <UIApplicationDelegate> {
-    
+
     UIWindow *window;
-        
+
     DetailViewController *detailViewController;
 }
 

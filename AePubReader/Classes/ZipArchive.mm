@@ -1,6 +1,6 @@
 //
 //  ZipArchive.mm
-//  
+//
 //
 //  Created by aish on 08-9-11.
 //  acsolu@gmail.com
@@ -43,7 +43,7 @@
 -(BOOL) CreateZipFile2:(NSString*) zipFile
 {
 	_zipFile = zipOpen( (const char*)[zipFile UTF8String], 0 );
-	if( !_zipFile ) 
+	if( !_zipFile )
 		return NO;
 	return YES;
 }
@@ -61,10 +61,10 @@
 //	tm_zip filetime;
 	time_t current;
 	time( &current );
-	
+
 	zip_fileinfo zipInfo = {0};
 //	zipInfo.dosDate = (unsigned long) current;
-	
+
 	NSDictionary* attr = [[NSFileManager defaultManager] fileAttributesAtPath:file traverseLink:YES];
 	if( attr )
 	{
@@ -74,7 +74,7 @@
 			// some application does use dosDate, but tmz_date instead
 		//	zipInfo.dosDate = [fileDate timeIntervalSinceDate:[self Date1980] ];
 			NSCalendar* currCalendar = [NSCalendar currentCalendar];
-			uint flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | 
+			uint flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit |
 				NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit ;
 			NSDateComponents* dc = [currCalendar components:flags fromDate:fileDate];
 			zipInfo.tmz_date.tm_sec = [dc second];
@@ -85,7 +85,7 @@
 			zipInfo.tmz_date.tm_year = [dc year];
 		}
 	}
-	
+
 	int ret ;
 	NSData* data = nil;
 	if( [_password length] == 0 )
@@ -179,7 +179,7 @@
 	{
 		[self OutputErrorMessage:@"Failed"];
 	}
-	
+
 	do{
 		if( [_password length]==0 )
 			ret = unzOpenCurrentFile( _unzFile );
@@ -205,7 +205,7 @@
 		char* filename = (char*) malloc( fileInfo.size_filename +1 );
 		unzGetCurrentFileInfo(_unzFile, &fileInfo, filename, fileInfo.size_filename + 1, NULL, 0, NULL, 0);
 		filename[fileInfo.size_filename] = '\0';
-		
+
 		// check if it contains directory
 		NSString * strPath = [NSString  stringWithCString:filename];
 		BOOL isDirectory = NO;
@@ -217,7 +217,7 @@
 			strPath = [strPath stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
 		}
 		NSString* fullPath = [path stringByAppendingPathComponent:strPath];
-		
+
 		if( isDirectory )
 			[fman createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
 		else
@@ -244,48 +244,48 @@
 				[self OutputErrorMessage:@"Failed to reading zip file"];
 				break;
 			}
-			else 
-				break;				
+			else
+				break;
 		}
 		if( fp )
 		{
 			fclose( fp );
 			// set the orignal datetime property
 			NSDate* orgDate = nil;
-			
+
 			//{{ thanks to brad.eaton for the solution
 			NSDateComponents *dc = [[NSDateComponents alloc] init];
-			
+
 			dc.second = fileInfo.tmu_date.tm_sec;
 			dc.minute = fileInfo.tmu_date.tm_min;
 			dc.hour = fileInfo.tmu_date.tm_hour;
 			dc.day = fileInfo.tmu_date.tm_mday;
 			dc.month = fileInfo.tmu_date.tm_mon+1;
 			dc.year = fileInfo.tmu_date.tm_year;
-			
-			NSCalendar *gregorian = [[NSCalendar alloc] 
+
+			NSCalendar *gregorian = [[NSCalendar alloc]
 									 initWithCalendarIdentifier:NSGregorianCalendar];
-			
+
 			orgDate = [gregorian dateFromComponents:dc] ;
 			[dc release];
 			[gregorian release];
 			//}}
-			
-			
+
+
 			NSDictionary* attr = [NSDictionary dictionaryWithObject:orgDate forKey:NSFileModificationDate]; //[[NSFileManager defaultManager] fileAttributesAtPath:fullPath traverseLink:YES];
 			if( attr )
 			{
 				//		[attr  setValue:orgDate forKey:NSFileCreationDate];
 				if( ![[NSFileManager defaultManager] setAttributes:attr ofItemAtPath:fullPath error:nil] )
 				{
-					// cann't set attributes 
+					// cann't set attributes
 					NSLog(@"Failed to set attributes");
 				}
-				
+
 			}
-		
-			
-			
+
+
+
 		}
 		unzCloseCurrentFile( _unzFile );
 		ret = unzGoToNextFile( _unzFile );
@@ -325,7 +325,7 @@
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDate *date = [gregorian dateFromComponents:comps];
-	
+
 	[comps release];
 	[gregorian release];
 	return date;

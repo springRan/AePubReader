@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -37,7 +37,7 @@
 	self = [self initWithIndex: &i inBuffer: &buffer];
 	*index = i;
 	return self;
-	
+
 }
 
 -(id)initWithIndex:(CFIndex*) index inBuffer:(CFStringInlineBuffer*)buffer{
@@ -71,7 +71,7 @@
 			self.attrName = createStringFromBuffer(buffer, *index, len);
 			[self.attrName release];//retained by property setter
 			(*index) += len;
-			
+
 			c = skipWhitespace(buffer, index);
 
 			if (c == '='){
@@ -98,7 +98,7 @@
 				(*index) += len;
 				c = skipWhitespace(buffer, index);
 			}
-			assert(c==']');				
+			assert(c==']');
 			(*index) += 1;
 		}
 		else if (c == '*')
@@ -130,7 +130,7 @@
 	if (identifier && ![identifier isEqualToString: [element attribute: @"id"]]) return NO;
 	if (classNames){
 		for (NSString* className in classNames)
-			if (![element hasClassName: className]) 
+			if (![element hasClassName: className])
 				return NO;
 	}
 	if (attrName && attrValue && ![attrValue isEqualToString: [element attribute: attrName]]) return NO;

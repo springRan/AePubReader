@@ -20,14 +20,14 @@
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
     // Override point for customization after app launch.
-    
+
     self.window.rootViewController = self.detailViewController;
     [self.window makeKeyAndVisible];
     [detailViewController loadEpub:@"vhugo"];
-    
+
     return YES;
 }
 

@@ -95,7 +95,7 @@ return(theNodeObject);
 
 - (void)setStringValue:(NSString *)inStringValue
 {
-NSAssert(_node->type == XML_TEXT_NODE, @"CNode setStringValue only implemented for text nodes");    
+NSAssert(_node->type == XML_TEXT_NODE, @"CNode setStringValue only implemented for text nodes");
 xmlNodeSetContent(_node, (const xmlChar *)[inStringValue UTF8String]);
 }
 

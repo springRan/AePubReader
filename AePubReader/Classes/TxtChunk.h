@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -26,7 +26,7 @@
 #import "Chunk.h"
 
 
-/** 
+/**
 	Represents a chunk of text. Note that we don't distinguish between ignoreable whitespace or not...
  */
 @interface TxtChunk : Chunk {

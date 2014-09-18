@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -67,7 +67,7 @@ static NSSet* HTML_TAGS_THAT_SHOULD_BE_EMPTY;
 		CFRelease(callbackMethods);
 		[callbackMatchers release];
 	}
-	[super dealloc];	
+	[super dealloc];
 }
 
 -(DocumentRoot*)parseHTML:(NSString*)source{
@@ -102,7 +102,7 @@ static NSSet* HTML_TAGS_THAT_SHOULD_BE_EMPTY;
 
 -(void)finishParsing{
 	[self parseMoreWithPartial: NO];
-	[self closeAllTags];	
+	[self closeAllTags];
 }
 
 -(NSString*)source{
@@ -134,7 +134,7 @@ static NSSet* HTML_TAGS_THAT_SHOULD_BE_EMPTY;
 		BOOL matchComplete = [matcher matchElement: element];
 		if (matchComplete){
 			SEL selector = (SEL)CFArrayGetValueAtIndex(callbackMethods, i);
-			NSObject* domainObject = [delegate performSelector: selector withObject: element]; 
+			NSObject* domainObject = [delegate performSelector: selector withObject: element];
 			if (domainObject)
 				element.domainObject = domainObject;
 		}
@@ -155,9 +155,9 @@ static NSSet* HTML_TAGS_THAT_SHOULD_BE_EMPTY;
 		// close everything up to found element
 		while ([tagStack count] > depthIndex){//int ii=[tagStack count] - 1; ii >= depth; ii--
 			closedElement = [tagStack lastObject];
-			closedElement.contentsLength = 
-				(tag == nil) ? lastChunk.range.location - NSMaxRange(closedElement.range) : 
-				(tag == closedElement) ? 0 : 
+			closedElement.contentsLength =
+				(tag == nil) ? lastChunk.range.location - NSMaxRange(closedElement.range) :
+				(tag == closedElement) ? 0 :
 				tag.range.location - NSMaxRange(closedElement.range);
 			if(!tag && closedElement.contentsLength == 0)
 				[self warning: ElementParserGeneralError description:@"Contents may not be right" chunk: closedElement];
@@ -222,13 +222,13 @@ static NSSet* HTML_TAGS_THAT_SHOULD_BE_EMPTY;
 	BOOL breakpoint = [[chunk description] rangeOfString: @""].location != NSNotFound;
 	if (breakpoint)
 		NSLog(@"found breakpoint");
-*/	
+*/
 	self.lastChunk = chunk;
 	TagChunk* tag = [chunk isKind: ChunkKindTag] ? (TagChunk*) chunk : nil;
 
-	if (![chunk isKind: ChunkKindText] && ![tag isCloseTag]) 
+	if (![chunk isKind: ChunkKindText] && ![tag isCloseTag])
 		[self parentElement].containsMarkup = YES;
-	
+
 	if (!tag)
 		return self;
 	else if ([tag isCloseTag])

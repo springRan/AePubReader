@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -35,7 +35,7 @@
 	CFStringInlineBuffer buffer;
 	CFRange range = CFRangeMake(0, [string length]);
 	CFStringInitInlineBuffer((CFStringRef)string, &buffer, range);
-	
+
 	chain = [[NSMutableArray alloc] initWithCapacity: 10];
 	unichar c;
 	CFIndex index = 0;
@@ -43,10 +43,10 @@
 		CSSSelectorPart* part = [[CSSSelectorPart alloc] initWithIndex: &index inBuffer: &buffer];
 		[chain addObject: part];
 		[part release];
-		
+
 		c = skipWhitespace(&buffer, &index);
 		if (!c) break;
-		
+
 		if (c=='+'){
 			[chain addObject: CSSVerbSuccessor];
 			index++;
@@ -73,9 +73,9 @@
 	for (id item in chain){
 		[result appendString: [item description]];
 	}
-	return result;	
+	return result;
 }
- 
+
 -(int)countOfParts{
 	return ([chain count] + 1) / 2;
 }

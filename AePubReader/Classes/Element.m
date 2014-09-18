@@ -15,7 +15,7 @@
 //	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //	GNU General Public License for more details.
 
-//	Commercial licences without many of the obligations of GPL 
+//	Commercial licences without many of the obligations of GPL
 //	are available for a nomial fee at sales@touchtankapps.com.
 
 //	You should have received a copy of the GNU General Public License
@@ -105,7 +105,7 @@
 -(NSArray*)classNames{
 	NSString* classNames = [self attribute: @"class"];
 	if (!classNames) return [NSArray array];
-	return [classNames componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];	
+	return [classNames componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
 }
 
 -(BOOL)hasClassName:(NSString*)aClassName{
@@ -132,7 +132,7 @@
 -(Element*)firstChild{
 	if ([nextElement parent] == self)
 		return nextElement;
-	else 
+	else
 		return nil;
 }
 
@@ -145,10 +145,10 @@
 }
 
 -(Element*)nextElementWithinScope:(Element*)scope{
-	if ((nextElement.parent == self) || nextSybling) 
+	if ((nextElement.parent == self) || nextSybling)
 		return nextElement;
 	else
-		return ([nextElement hasAncestor: scope]) ? nextElement : nil;		
+		return ([nextElement hasAncestor: scope]) ? nextElement : nil;
 }
 
 -(NSString*)contentsText{
@@ -255,11 +255,11 @@
 
 -(NSString*)key{
 	if (!key)
-		self.key = ([self caseSensative]) 
-			? [self tagName] 
+		self.key = ([self caseSensative])
+			? [self tagName]
 			: [[self tagName] lowercaseString];
 	return key;
-}	
+}
 
 -(NSString*)description{
 	NSMutableString* result = [NSMutableString string];
@@ -271,9 +271,9 @@
 	}
 	if ([self isEmptyTag])
 		[result appendString: @" />"];
-	else		
+	else
 		[result appendString: @">"];
-	return result;	
+	return result;
 }
 
 -(NSString*)dumpTree{
@@ -281,7 +281,7 @@
 	Element* e = self;
 	while (e){
 		for (Element* ee = e; ee; ee = [ee parent])
-			[result appendString: @"   "];			
+			[result appendString: @"   "];
 		[result appendString: [e description]];
 		NSString* txt = (e.containsMarkup) ? @"..." : e.contentsText;
 		[result appendFormat: @"%@\n", txt];
